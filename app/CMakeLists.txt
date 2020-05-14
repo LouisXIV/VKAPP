@@ -8,13 +8,19 @@ add_library( app-glue STATIC ${APP_GLUE_DIR}/android_native_app_glue.c)
 # build vulkan app
 set(SRC_DIR src/main/jni)
 set(WRAPPER_DIR ./common/vulkan_wrapper)
+set(COMMON_DIR ./common) # for glm
+set(UTILITY_DIR ./common/utils)
 
 add_library(vktuts SHARED
             ${SRC_DIR}/VulkanMain.cpp
             ${SRC_DIR}/AndroidMain.cpp
+            ${UTILITY_DIR}/util_init.cpp
+            ${UTILITY_DIR}/util.cpp
             ${WRAPPER_DIR}/vulkan_wrapper.cpp)
 
-include_directories(${WRAPPER_DIR})
+include_directories(${UTILITY_DIR}
+                    ${COMMON_DIR}
+                    ${WRAPPER_DIR})
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Werror \
                      -DVK_USE_PLATFORM_ANDROID_KHR")
