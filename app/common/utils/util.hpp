@@ -17,13 +17,16 @@
  * limitations under the License.
  */
 
+#ifndef UTIL_HPP
+#define UTIL_HPP
+
 #include <iostream>
 #include <string>
 #include <sstream>
 #include <vector>
 
 #define GLM_FORCE_RADIANS
-#include "glm/glm.hpp"
+#include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
 #ifdef _WIN32
@@ -137,6 +140,7 @@ typedef struct {
  * by utility functions.
  */
 struct sample_info {
+    bool initialized_;
 #ifdef _WIN32
 #define APP_NAME_STR_LEN 80
     HINSTANCE connection;        // hInstance - Windows Instance
@@ -291,7 +295,10 @@ int sample_main(int argc, char *argv[]);
 // Replace printf to logcat output.
 #define printf(...) __android_log_print(ANDROID_LOG_DEBUG, "VK-SAMPLE", __VA_ARGS__);
 
+#if 0
 bool Android_process_command();
+#endif //0
+void AndroidSetApplication(struct android_app *app);
 ANativeWindow* AndroidGetApplicationWindow();
 FILE* AndroidFopen(const char* fname, const char* mode);
 void AndroidGetWindowSize(int32_t *width, int32_t *height);
@@ -303,3 +310,5 @@ bool AndroidLoadFile(const char* filePath, std::string *data);
 #endif
 
 #endif
+
+#endif // UTIL_HPP

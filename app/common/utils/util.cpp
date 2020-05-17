@@ -41,7 +41,9 @@ samples utility functions
 #include "string.h"
 #include "errno.h"
 #include <android_native_app_glue.h>
+#ifdef HAS_SHADERC
 #include "shaderc/shaderc.hpp"
+#endif // HAS_SHADERC
 // Static variable that keeps ANativeWindow and asset manager instances.
 static android_app *Android_application = nullptr;
 #elif (defined(VK_USE_PLATFORM_IOS_MVK) || defined(VK_USE_PLATFORM_MACOS_MVK))
@@ -449,6 +451,7 @@ void finalize_glslang() {
 #endif
 }
 
+#ifdef HAS_SHADERC
 #ifdef __ANDROID__
 // Android specific helper functions for shaderc.
 struct shader_type_mapping {
@@ -526,7 +529,7 @@ bool GLSLtoSPV(const VkShaderStageFlagBits shader_type, const char *pshader, std
 #endif
     return true;
 }
-
+#endif // HAS_SHADERC
 #endif  // IOS or macOS
 
 void wait_seconds(int seconds) {
@@ -789,8 +792,7 @@ std::string get_file_directory() {
 #endif
 }
 
-#if 0
-//#ifdef __ANDROID__
+#ifdef __ANDROID__
 //
 // Android specific helper functions.
 //
@@ -830,7 +832,7 @@ class AndroidBuffer : public std::streambuf {
     android_LogPriority priority_ = ANDROID_LOG_INFO;
     char buffer_[kBufferSize];
 };
-
+#if 0
 void Android_handle_cmd(android_app *app, int32_t cmd) {
     switch (cmd) {
         case APP_CMD_INIT_WINDOW:
@@ -879,6 +881,12 @@ void android_main(struct android_app *app) {
     while (app->destroyRequested == 0);
 
     return;
+}
+#endif // 0
+
+void AndroidSetApplication(struct android_app *app) {
+    // Set static variables.
+    Android_application = app;
 }
 
 ANativeWindow *AndroidGetApplicationWindow() {

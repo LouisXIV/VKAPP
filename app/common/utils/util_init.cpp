@@ -27,7 +27,7 @@ samples "init" utility functions
 #include <assert.h>
 #include <string.h>
 #include "util_init.hpp"
-#include "cube_data.h"
+//#include "cube_data.h"
 
 #if defined(VK_USE_PLATFORM_WAYLAND_KHR)
 #include <linux/input.h>
@@ -583,10 +583,9 @@ void destroy_window(struct sample_info &info) {
 }
 
 #endif  // _WIN32
-
 void init_window_size(struct sample_info &info, int32_t default_width, int32_t default_height) {
 #ifdef __ANDROID__
-    AndroidGetWindowSize(&info.width, &info.height);
+    AndroidGetWindowSize((int32_t*) &info.width, (int32_t*) &info.height);
 #else
     info.width = default_width;
     info.height = default_height;
@@ -1465,7 +1464,9 @@ void init_descriptor_set(struct sample_info &info, bool use_texture) {
 
 void init_shaders(struct sample_info &info, const char *vertShaderText, const char *fragShaderText) {
     VkResult U_ASSERT_ONLY res;
+#ifdef HAS_SHADERC
     bool U_ASSERT_ONLY retVal;
+#endif // HAS_SHADERC
 
     // If no shaders were submitted, just return
     if (!(vertShaderText || fragShaderText)) return;
@@ -1481,10 +1482,10 @@ void init_shaders(struct sample_info &info, const char *vertShaderText, const ch
         info.shaderStages[0].flags = 0;
         info.shaderStages[0].stage = VK_SHADER_STAGE_VERTEX_BIT;
         info.shaderStages[0].pName = "main";
-
+#ifdef HAS_SHADERC
         retVal = GLSLtoSPV(VK_SHADER_STAGE_VERTEX_BIT, vertShaderText, vtx_spv);
         assert(retVal);
-
+#endif // HAS_SHADERC
         moduleCreateInfo.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
         moduleCreateInfo.pNext = NULL;
         moduleCreateInfo.flags = 0;
@@ -1502,10 +1503,10 @@ void init_shaders(struct sample_info &info, const char *vertShaderText, const ch
         info.shaderStages[1].flags = 0;
         info.shaderStages[1].stage = VK_SHADER_STAGE_FRAGMENT_BIT;
         info.shaderStages[1].pName = "main";
-
+#ifdef HAS_SHADERC
         retVal = GLSLtoSPV(VK_SHADER_STAGE_FRAGMENT_BIT, fragShaderText, frag_spv);
         assert(retVal);
-
+#endif // HAS_SHADERC
         moduleCreateInfo.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
         moduleCreateInfo.pNext = NULL;
         moduleCreateInfo.flags = 0;

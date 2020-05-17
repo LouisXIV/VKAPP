@@ -33,7 +33,6 @@ void handle_cmd(android_app* app, int32_t cmd) {
 }
 
 void android_main(struct android_app* app) {
-
   // Set the callback to process system events
   app->onAppCmd = handle_cmd;
 

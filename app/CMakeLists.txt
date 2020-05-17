@@ -14,8 +14,8 @@ set(UTILITY_DIR ./common/utils)
 add_library(vktuts SHARED
             ${SRC_DIR}/VulkanMain.cpp
             ${SRC_DIR}/AndroidMain.cpp
-            ${UTILITY_DIR}/util_init.cpp
             ${UTILITY_DIR}/util.cpp
+            ${UTILITY_DIR}/util_init.cpp
             ${WRAPPER_DIR}/vulkan_wrapper.cpp)
 
 include_directories(${UTILITY_DIR}
@@ -24,5 +24,6 @@ include_directories(${UTILITY_DIR}
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Werror \
                      -DVK_USE_PLATFORM_ANDROID_KHR")
+
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -u ANativeActivity_onCreate")
 target_link_libraries(vktuts app-glue log android)
