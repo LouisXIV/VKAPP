@@ -12,7 +12,7 @@ set(COMMON_DIR ./common) # for glm
 set(UTILITY_DIR ./common/utils)
 
 add_library(vktuts SHARED
-            ${SRC_DIR}/VulkanMain.cpp
+            ${SRC_DIR}/VulkanMain2.cpp
             ${SRC_DIR}/AndroidMain.cpp
             ${UTILITY_DIR}/util.cpp
             ${UTILITY_DIR}/util_init.cpp
